@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from utils import read_matrix
+import utils
 
 
 class CaveMap:
@@ -55,7 +55,7 @@ class CaveMap:
 
 
 def main():
-    cm = CaveMap(read_matrix("input.txt"))
+    cm = CaveMap(utils.read_matrix(utils.input()))
     print(cm)
     for i in range(10000000):
         print(cm)

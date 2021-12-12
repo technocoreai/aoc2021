@@ -1,6 +1,3 @@
-import os
-
-
 class Matrix:
     def __init__(self, values):
         self.values = values
@@ -11,6 +8,13 @@ class Matrix:
         self.width = next(iter(widths))
 
 
-def read_matrix(filename):
-    with open(os.path.join("/Users/zee/Downloads", filename)) as f:
-        return Matrix([[int(c) for c in line.strip()] for line in f.readlines()])
+def test_input():
+    return open("/Users/zee/Downloads/input.txt")
+
+
+def input():
+    return open("/Users/zee/Downloads/input-2.txt")
+
+
+def read_matrix(f):
+    return Matrix([[int(c) for c in line.strip()] for line in f.readlines()])
