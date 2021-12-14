@@ -9,11 +9,11 @@ class Matrix:
 
 
 def test_input():
-    return open("/Users/zee/Downloads/input.txt")
+    return open("input.txt")
 
 
 def input():
-    return open("/Users/zee/Downloads/input-2.txt")
+    return open("input-2.txt")
 
 
 def read_matrix(f):
