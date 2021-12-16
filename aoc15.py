@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-import heapq
+import sortedcontainers
 import math
 import utils
 
 
 def find_path(cave):
-    candidates = set()
+    candidates = sortedcontainers.SortedSet()
     scores = {utils.Point(x, y): math.inf for x in range(cave.width) for y in range(cave.height)}
     current_node = utils.Point(0, 0)
     scores[current_node] = 0
@@ -26,8 +26,7 @@ def find_path(cave):
         if len(candidates) == 0:
             return scores[target_node]
         else:
-            current_node = next(iter(candidates))
-            candidates.remove(current_node)
+            current_node = candidates.pop(0)
 
 
 def expand(cave):
