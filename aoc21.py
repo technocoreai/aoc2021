@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from functools import lru_cache
 from collections import Counter
 import itertools
 from typing import NamedTuple
@@ -17,29 +18,20 @@ class Player(NamedTuple):
 ROLLS = Counter(sum(v) for v in itertools.product([1, 2, 3], repeat=3))
 
 
-def play(active_player, other_player, limit, current_universes=1):
+@lru_cache(1024000)
+def play_memo(active_player, other_player, limit):
+    result = Counter()
     for roll, universes in ROLLS.items():
         updated_player = active_player.move(roll)
         if updated_player.score >= limit:
-            yield (updated_player.id, current_universes * universes)
+            result[updated_player.id] += universes
         else:
-            yield from play(
-                other_player,
-                updated_player,
-                limit,
-                current_universes=current_universes * universes,
-            )
+            result += {k: v * universes for k, v in play_memo(other_player, updated_player, limit).items()}
+    return result
 
 
 def main():
-    total_wins = Counter()
-    iterations = 0
-    for player, wins in play(Player(id=1, position=1), Player(id=2, position=6), limit=21):
-        total_wins[player] += wins
-        iterations += 1
-        if iterations % 100000 == 0:
-            print(iterations, total_wins)
-    print()
+    total_wins = play_memo(Player(id=1, position=1), Player(id=2, position=6), limit=21)
     for wins, player in sorted((v, i) for i, v in total_wins.items()):
         print(f"player {player}: {wins}")
 
